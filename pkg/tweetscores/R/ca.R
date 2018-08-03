@@ -43,7 +43,7 @@ CA <- function (obj, nd = NA, suprow = NA, supcol = NA, subsetrow = NA,
     NtempR <- Ntemp[, -supcol]
   }
   if (!is.na(supcol[1])) {
-    SC <- as.matrix(NtempC[, supcol])
+    SC <- NtempC[, supcol]
     Ntemp <- Ntemp[, -supcol]
     cs.sum <- apply(SC, 2, sum)
   }
@@ -54,7 +54,7 @@ CA <- function (obj, nd = NA, suprow = NA, supcol = NA, subsetrow = NA,
     rs.sum <- apply(SR, 1, sum)
   }
   rm("NtempR")
-  N <- matrix(as.matrix(Ntemp), nrow = dim(Ntemp)[1], ncol = dim(Ntemp)[2])
+  N <- Ntemp
   subsetrowt <- subsetrow
   if (!is.na(subsetrow[1]) & !is.na(suprow[1])) {
     subsetrowi <- subsetrow
