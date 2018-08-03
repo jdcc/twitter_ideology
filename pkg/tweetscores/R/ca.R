@@ -32,7 +32,7 @@ CA <- function (obj, nd = NA, suprow = NA, supcol = NA, subsetrow = NA,
   J <- dim(obj)[2]
   rn <- dimnames(obj)[[1]]
   cn <- dimnames(obj)[[2]]
-  N <- matrix(as.matrix(obj), nrow = I, ncol = J)
+  N <- obj
   Ntemp <- N
   NtempC <- NtempR <- N
   rm("N")
