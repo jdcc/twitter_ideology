@@ -23,6 +23,8 @@
 #'
 #'
 #'
+library(Matrix)
+
 CA <- function (obj, nd = NA, suprow = NA, supcol = NA, subsetrow = NA,
                 subsetcol = NA, verbose=TRUE)
 {
@@ -49,9 +51,9 @@ CA <- function (obj, nd = NA, suprow = NA, supcol = NA, subsetrow = NA,
   }
   rm("NtempC")
   if (!is.na(suprow[1])) {
-    SR <- matrix(as.matrix(NtempR[suprow, ]), nrow = length(suprow))
+    SR <- NtempR[suprow, ]
     Ntemp <- Ntemp[-suprow, ]
-    rs.sum <- apply(SR, 1, sum)
+    rs.sum <- Matrix::rowSums(SR)
   }
   rm("NtempR")
   N <- Ntemp
@@ -118,9 +120,9 @@ CA <- function (obj, nd = NA, suprow = NA, supcol = NA, subsetrow = NA,
     nd <- nd.max
   n <- sum(N)
   P <- N/n
-  rm <- apply(P, 1, sum)
-  cm <- apply(P, 2, sum)
-  eP <- rm %*% t(cm)
+  rm <- Matrix::rowSums(P)
+  cm <- Matrix::colSums(P)
+  eP <- rm %*% Matrix::t(cm)
   S <- (P - eP)/sqrt(eP)
   rm("eP")
   rm("P")
@@ -194,7 +196,7 @@ CA <- function (obj, nd = NA, suprow = NA, supcol = NA, subsetrow = NA,
     cs <- cm
     gam.00 <- gam
     base2 <- SR/matrix(rs.sum, nrow = nrow(SR), ncol = ncol(SR))
-    base2 <- t(base2)
+    base2 <- Matrix::t(base2)
     cs.0 <- matrix(cs, nrow = nrow(base2), ncol = ncol(base2))
     svphi <- matrix(sv[1:nd], nrow = length(suprow), ncol = nd,
                     byrow = TRUE)
