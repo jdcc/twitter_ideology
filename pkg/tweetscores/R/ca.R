@@ -25,6 +25,7 @@
 #'
 library(Matrix)
 
+options(error = function() traceback())
 CA <- function (obj, nd = NA, suprow = NA, supcol = NA, subsetrow = NA,
                 subsetcol = NA, verbose=TRUE)
 {
@@ -162,15 +163,15 @@ CA <- function (obj, nd = NA, suprow = NA, supcol = NA, subsetrow = NA,
   ###
   if (!is.na(suprow[1])) {
     if (is.na(supcol[1])) {
-      P.stemp <- matrix(as.matrix(obj[suprow, ]), nrow = length(suprow))
+      P.stemp <- obj[suprow, ]
     }
     else {
       P.stemp <- matrix(as.matrix(obj[suprow, -supcol]),
                         nrow = length(suprow))
     }
-    P.stemp <- P.stemp/apply(P.stemp, 1, sum)
-    P.stemp <- t((t(P.stemp) - cm)/sqrt(cm))
-    rschidist <- sqrt(apply(P.stemp^2, 1, sum))
+    P.stemp <- P.stemp/Matrix::rowSums(P.stemp)
+    P.stemp <- Matrix::t((Matrix::t(P.stemp) - cm)/sqrt(cm))
+    rschidist <- sqrt(Matrix::rowSums(P.stemp^2))
     rchidist[-suprow] <- rachidist
     rchidist[suprow] <- rschidist
     rm("P.stemp")
